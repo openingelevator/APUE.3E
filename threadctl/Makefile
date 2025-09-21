@@ -19,7 +19,7 @@ endif
 
 PROGS = atfork suspend
 
-all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS)) $(BUILD_DIR)/detach.o $(BUILD_DIR)/getenv1.o $(BUILD_DIR)/getenv2.o $(BUILD_DIR)/getenv3.o $(BUILD_DIR)/$(TOUT)
+all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS)) $(BUILD_DIR)/detach.o $(BUILD_DIR)/getenv1.o $(BUILD_DIR)/getenv2.o $(BUILD_DIR)/getenv3.o $(addprefix $(BUILD_DIR)/,$(TOUT))
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)

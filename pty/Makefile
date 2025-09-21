@@ -15,19 +15,21 @@ all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS))
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-$(BUILD_DIR)/pty: main.o loop.o driver.o $(LIBAPUE) | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -o $@ main.o loop.o driver.o $(LDFLAGS) $(LDLIBS)
+# 可执行程序输出到 build 目录
+$(BUILD_DIR)/pty: $(addprefix $(BUILD_DIR)/,main.o loop.o driver.o) $(LIBAPUE) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
-main.o: main.c $(LIBAPUE)
-	$(CC) $(CFLAGS) -c main.c -o main.o
+# .o 文件输出到 build 目录
+$(BUILD_DIR)/main.o: main.c $(LIBAPUE) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-loop.o: loop.c $(LIBAPUE)
-	$(CC) $(CFLAGS) -c loop.c -o loop.o
+$(BUILD_DIR)/loop.o: loop.c $(LIBAPUE) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-driver.o: driver.c $(LIBAPUE)
-	$(CC) $(CFLAGS) -c driver.c -o driver.o
+$(BUILD_DIR)/driver.o: driver.c $(LIBAPUE) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(BUILD_DIR)/* *.o
+	rm -rf $(BUILD_DIR)/*
 
 include $(ROOT)/Make.libapue.inc

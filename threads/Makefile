@@ -26,8 +26,15 @@ ifeq "$(PLATFORM)" "solaris"
 endif
 
 PROGS = badexit2 cleanup exitstatus threadid
+OBJS =
+ifneq "$(TLOCK)" ""
+OBJS += $(BUILD_DIR)/$(TLOCK)
+endif
+ifneq "$(BAR)" ""
+OBJS += $(BUILD_DIR)/$(BAR)
+endif
 
-all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS)) $(BUILD_DIR)/condvar.o $(BUILD_DIR)/maketimeout.o $(BUILD_DIR)/mutex1.o $(BUILD_DIR)/mutex2.o $(BUILD_DIR)/mutex3.o $(BUILD_DIR)/rwlock.o $(BUILD_DIR)/$(TLOCK) $(BUILD_DIR)/$(BAR)
+all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS)) $(BUILD_DIR)/condvar.o $(BUILD_DIR)/maketimeout.o $(BUILD_DIR)/mutex1.o $(BUILD_DIR)/mutex2.o $(BUILD_DIR)/mutex3.o $(BUILD_DIR)/rwlock.o $(OBJS)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)

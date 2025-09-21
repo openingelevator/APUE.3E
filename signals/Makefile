@@ -16,7 +16,7 @@ endif
 PROGS = critical mask read1 read2 reenter sigtstp sigusr suspend1 suspend2
 MOREPROGS = systest2 tsleep2
 
-all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS) $(MOREPROGS)) $(BUILD_DIR)/abort.o $(BUILD_DIR)/sleep1.o $(BUILD_DIR)/sleep2.o $(BUILD_DIR)/system.o $(BUILD_DIR)/$(CLD)
+all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS) $(MOREPROGS)) $(BUILD_DIR)/abort.o $(BUILD_DIR)/sleep1.o $(BUILD_DIR)/sleep2.o $(BUILD_DIR)/system.o $(addprefix $(BUILD_DIR)/,$(CLD))
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)

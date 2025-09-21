@@ -12,7 +12,7 @@ endif
 
 PROGS = buf fgetsfputs getcharbug getcputc mkstemp tempfiles
 
-all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS)) $(BUILD_DIR)/$(MEMSTR)
+all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS)) $(addprefix $(BUILD_DIR)/,$(MEMSTR))
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)

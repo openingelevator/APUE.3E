@@ -4,40 +4,42 @@ include $(ROOT)/Make.defines.$(PLATFORM)
 
 BUILD_DIR=build
 
-PROGS =	conf options
+PROGS = conf options
 
-all:	$(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS))
+all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(PROGS))
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-$(BUILD_DIR)/%:	%.c $(LIBAPUE) | $(BUILD_DIR)
+# 可执行程序输出到 build 目录
+$(BUILD_DIR)/%: $(BUILD_DIR)/%.c $(LIBAPUE) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) $(LDLIBS)
 
-conf:	conf.c
+# conf.c 生成到 build 目录
+$(BUILD_DIR)/conf.c: makeconf.awk $(BUILD_DIR)/sysconf.sym $(BUILD_DIR)/pathconf.sym | $(BUILD_DIR)
+	$(AWK) -f makeconf.awk >$@
 
-conf.c:	makeconf.awk sysconf.sym pathconf.sym
-	$(AWK) -f makeconf.awk >conf.c
+# sysconf.sym 生成到 build 目录
+$(BUILD_DIR)/sysconf.sym: sysconf-lim.sym | $(BUILD_DIR)
+	grep -v "^#" $< >$@
 
-sysconf.sym:	sysconf-lim.sym
-	grep -v "^#" sysconf-lim.sym >sysconf.sym
+# pathconf.sym 生成到 build 目录
+$(BUILD_DIR)/pathconf.sym: pathconf-lim.sym | $(BUILD_DIR)
+	grep -v "^#" $< >$@
 
-pathconf.sym:	pathconf-lim.sym
-	grep -v "^#" pathconf-lim.sym >pathconf.sym
+# options.c 生成到 build 目录
+$(BUILD_DIR)/options.c: makeopt.awk $(BUILD_DIR)/sysopt.sym $(BUILD_DIR)/pathopt.sym | $(BUILD_DIR)
+	$(AWK) -f makeopt.awk >$@
 
-options:	options.c
+# sysopt.sym 生成到 build 目录
+$(BUILD_DIR)/sysopt.sym: sysconf-opt.sym | $(BUILD_DIR)
+	grep -v "^#" $< >$@
 
-options.c:	makeopt.awk sysopt.sym pathopt.sym
-	$(AWK) -f makeopt.awk >options.c
-
-sysopt.sym:	sysconf-opt.sym
-	grep -v "^#" sysconf-opt.sym >sysopt.sym
-
-pathopt.sym:	pathconf-opt.sym
-	grep -v "^#" pathconf-opt.sym >pathopt.sym
+# pathopt.sym 生成到 build 目录
+$(BUILD_DIR)/pathopt.sym: pathconf-opt.sym | $(BUILD_DIR)
+	grep -v "^#" $< >$@
 
 clean:
-	rm -f $(BUILD_DIR)/* conf.c options.c \
-		pathconf.sym pathopt.sym sysconf.sym sysopt.sym
+	rm -rf $(BUILD_DIR)/*
 
 include $(ROOT)/Make.libapue.inc

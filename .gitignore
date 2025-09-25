@@ -1,2 +1,5 @@
 # 忽略所有子目录下的 build 文件夹
 **/build/
+.vscode/
+test/*
+test/

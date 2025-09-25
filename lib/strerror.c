@@ -1,6 +1,6 @@
 #include	<stdio.h>
 
-#ifndef LINUX
+#if !defined(LINUX) && !defined(MACOS)
 extern char	*sys_errlist[];
 extern int	sys_nerr;
 #endif
